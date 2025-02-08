@@ -11,7 +11,10 @@ export class ShortenUrlService {
     for (let i = 0; i < ShortenUrlService.MAX_RETRIES; i++) {
       const shortId = ShortId.generate();
 
-      // TODO: 生成した短縮URLの識別子がすでに生成済みの識別子でないか確認
+      // 生成した短縮URLの識別子がすでに生成済みの識別子でないか確認
+      if (ShortenUrlService.alreadyExists(shortId)) {
+        continue;
+      }
 
       // TODO: 元URLと短縮URLの対応データを保存
 
@@ -19,6 +22,12 @@ export class ShortenUrlService {
       return new URL (`http://localhost:5173/${shortId.toValue()}`);
     }
     throw new Error("Failed to generate a unique ShortId after multiple attempts.");
+  }
+
+  // TODO: 実装
+  // TODO: テストのために一時的にpublicにしているが、実装をいじって、privateでもテストできるようにする
+  public static alreadyExists(shortId: ShortId): boolean {
+    return false;
   }
 
 }

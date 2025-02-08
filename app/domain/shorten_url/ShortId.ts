@@ -17,13 +17,16 @@ export class ShortId {
     this.value = id;
   }
 
+  /**
+   * 短縮URL識別子の生成
+   */
   static generate(): ShortId {
     return new ShortId(this.nanoid());
   }
 
   /**
-   * 短縮IDのバリデーション
-   * @param {string} id 検証する短縮ID
+   * 短縮URL識別子のバリデーション
+   * @param {string} id 検証する短縮URL識別子
    * @returns {boolean} 有効なら true, 無効なら false
    */
   static isValid(id: string): boolean {
