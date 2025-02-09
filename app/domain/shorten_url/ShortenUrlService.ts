@@ -47,4 +47,12 @@ export class ShortenUrlService {
     throw new Error("Failed to generate a unique ShortId after multiple attempts.");
   }
 
+  public async fetchOriginalUrl(shortId: string): Promise<string | null> {
+    const urlMapping = await this.urlMappingRepository.findByShortId(shortId);
+    if (urlMapping === null) {
+      return null;
+    }
+    return urlMapping.originalUrl;
+  }
+
 }
