@@ -2,15 +2,16 @@ import { ActionFunction } from "@remix-run/node";
 import { ShortenUrlService } from "~/domain/shorten_url/ShortenUrlService";
 import { SQLiteUrlMappingRepository } from "~/infrastructure/UrlMapping";
 import path from "path";
-import { fileURLToPath } from "url";
+import dotenv from "dotenv";
 
-// __dirnameの代わりにimport.meta.urlを使用
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+dotenv.config();
 
-// .envなどから取得するべきだが、今回は一旦固定値
-// TODO: .envから取得するように修正
-const dbFilePath = path.resolve(__dirname, "../../../db/database.sqlite");
+// 未設定の場合はエラーをスロー
+if (!process.env.DATABASE_FILE_PATH) {
+  throw new Error("❌ DATABASE_FILE_PATH is not defined in .env. Please set it before running the application.");
+}
+
+const dbFilePath = path.resolve(process.env.DATABASE_FILE_PATH);
 
 const urlMappingRepository = new SQLiteUrlMappingRepository(dbFilePath);
 const shortenUrlService = new ShortenUrlService(urlMappingRepository);
