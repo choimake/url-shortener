@@ -9,11 +9,11 @@ export class ShortenUrlService {
 
   private static readonly MAX_RETRIES = 10; // 衝突回避のための最大試行回数
 
-  private baseUrl = "http://localhost:5173";
-
+  private baseUrl: string;
   private urlMappingRepository: UrlMappingRepository;
 
-  public constructor(urlMappingRepository: UrlMappingRepository) {
+  public constructor(baseUrl: string, urlMappingRepository: UrlMappingRepository) {
+    this.baseUrl = baseUrl;
     this.urlMappingRepository = urlMappingRepository;
   }
 

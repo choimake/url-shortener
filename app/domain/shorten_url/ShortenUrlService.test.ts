@@ -20,11 +20,12 @@ test('ShortenUrlService.generate() should generate a valid shortened URL', async
     findByShortId: vi.fn().mockResolvedValue(null), // 本テストでは未使用だが、未定義だと型が合わずエラーになるので定義
   };
 
-  const shortenUrlService = new ShortenUrlService(mockUrlMappingRepository);
-  const originalUrl = 'http://example.com';
+  const baseUrl = 'http://example.base.com';
+  const shortenUrlService = new ShortenUrlService(baseUrl, mockUrlMappingRepository);
+  const originalUrl = 'http://example.original.com';
   const shortenedUrl = await shortenUrlService.generate(originalUrl);
 
-  expect(shortenedUrl.toString()).toBe('http://localhost:5173/A1B2C3D4');
+  expect(shortenedUrl.toString()).toBe('http://example.base.com/A1B2C3D4');
   expect(mockUrlMappingRepository.save).toHaveBeenCalledWith('A1B2C3D4', originalUrl);
 });
 
@@ -40,6 +41,7 @@ test('ShortenUrlService.generate() should throw an error after maximum retries',
     },
   }));
 
+  const baseUrl = 'http://example.base.com';
   const originalUrl = 'http://example.com';
 
   // Mock UrlMappingRepository
@@ -51,7 +53,7 @@ test('ShortenUrlService.generate() should throw an error after maximum retries',
     findByShortId: vi.fn().mockResolvedValue(null),  // 本テストでは未使用だが、未定義だと型が合わずエラーになるので定義
   };
 
-  const shortenUrlService = new ShortenUrlService(mockUrlMappingRepository);
+  const shortenUrlService = new ShortenUrlService(baseUrl, mockUrlMappingRepository);
 
   await expect(shortenUrlService.generate(originalUrl)).rejects.toThrow('Failed to generate a unique ShortId after multiple attempts.');
 });

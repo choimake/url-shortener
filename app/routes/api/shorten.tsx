@@ -7,14 +7,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // 未設定の場合はエラーをスロー
+if (!process.env.BASE_URL) {
+  throw new Error("❌ BASE_URL is not defined in .env. Please set it before running the application.");
+}
 if (!process.env.DATABASE_FILE_PATH) {
   throw new Error("❌ DATABASE_FILE_PATH is not defined in .env. Please set it before running the application.");
 }
 
+const baseUrl = process.env.BASE_URL;
 const dbFilePath = path.resolve(process.env.DATABASE_FILE_PATH);
 
 const urlMappingRepository = new SQLiteUrlMappingRepository(dbFilePath);
-const shortenUrlService = new ShortenUrlService(urlMappingRepository);
+const shortenUrlService = new ShortenUrlService(baseUrl, urlMappingRepository);
 
 export const action: ActionFunction = async ({ request }) => {
 
