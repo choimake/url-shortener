@@ -15,8 +15,8 @@ export { shortenAction as action };
 export default function Index() {
 
   // useActionDataは、アクションの実行結果を取得するためのフック
-  // { url: string } は、アクションの返り値の型を指定している
-  const actionData = useActionData<{ url: string }>();
+  // { url?: string; error?: string } は、アクションの返り値の型を指定している
+  const actionData = useActionData<{ url?: string; error?: string }>();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-800">
@@ -38,7 +38,7 @@ export default function Index() {
           Shorten URL
         </button>
       </Form>
-      {actionData && (
+      {actionData?.url && (
         <div className="mt-4 p-4 bg-indigo-600 text-white rounded-md shadow-lg w-full max-w-md">
           <label className="block mb-2">
             <span className="font-bold">Shorten URL:</span>
@@ -49,6 +49,11 @@ export default function Index() {
               className="mt-1 block w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-white"
             />
           </label>
+        </div>
+      )}
+      {actionData?.error && (
+        <div className="mt-4 p-4 bg-red-500 text-white rounded-md shadow-lg w-full max-w-md">
+          <span className="font-bold">Error:</span> {actionData.error}
         </div>
       )}
     </div>
