@@ -30,6 +30,8 @@ export const action: ActionFunction = async ({ request }) => {
 function isValidUrl(url: string): boolean {
   try {
     const parsedUrl = new URL(url);
+    // NOTE:
+    // URL()だけの判定だと、ftp:// なども許容されてしまうため、http/httpsのみを許容するよう判定を入れている
     return parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
   } catch (_) {
     return false;

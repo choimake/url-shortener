@@ -1,4 +1,5 @@
 
+// NOTE:
 // 型定義のみを記述したい場合には、interface を使うものという認識
 // 今回の以下のケースにおいて、interfaceを使用することに対する妥当性がどれくらいあるかは判断できていない
 export interface UrlMapping {

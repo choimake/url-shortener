@@ -7,6 +7,8 @@ import { UrlMappingRepository } from "./UrlMapping";
  */
 export class ShortenUrlService {
 
+  // NOTE:
+  // 10回にした明確な理由は特にない。適当に決めた値である。
   private static readonly MAX_RETRIES = 10; // 衝突回避のための最大試行回数
 
   private baseUrl: string;
@@ -18,12 +20,14 @@ export class ShortenUrlService {
   }
 
   public async generate(originalUrl: string): Promise<URL> {
+
+    // URL短縮識別子が衝突した時の回避のためのループ処理
     for (let i = 0; i < ShortenUrlService.MAX_RETRIES; i++) {
 
       // 元URLに対する短縮URL識別子がすでに存在するか確認
       const mapping = await this.urlMappingRepository.findByOriginalUrl(originalUrl);
 
-      // すでに存在する場合はその短縮URLを返す
+      // すでに存在する場合はその短縮URLを返す（新たに生成する必要がないため）
       if (mapping !== null) {
         return new URL(`${this.baseUrl}/${mapping.shortId}`);
       }
