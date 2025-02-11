@@ -15,5 +15,9 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 
   // 元URLへリダイレクト
+  // NOTE:
+  // ステータスコードを302にしている理由
+  // - 301を使用すると、ブラウザがキャッシュを利用し、アクセスが本アプリに来なくなる可能性があるため
+  // - その結果、ブラウザにリダイレクト先がキャッシュされると、リダイレクトの不具合発生時にデバッグのコストが増大するため
   return redirect(originalUrl, { status: 302 });
 };

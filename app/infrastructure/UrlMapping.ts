@@ -12,6 +12,9 @@ export class SQLiteUrlMappingRepository implements UrlMappingRepository {
   }
 
   private initialize() {
+    // NOTE:
+    // 別途、マイグレーションツールを使用してDBのスキーマを管理することもできるが、
+    // 現段階では、デモ用途までしか想定していないため、DBの初期化処理を直接記述している
     this.db.run(`
       CREATE TABLE IF NOT EXISTS url_mappings (
         shortId TEXT PRIMARY KEY,
